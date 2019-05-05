@@ -18,7 +18,6 @@ dt = dt.iloc[1:]
 
 dt['year'] = dt['Data'].str[:4]
 dt['year'] = pd.to_datetime(dt['year']).dt.year
-#dt['year'] = dt['year'].dt.year
 dt['state'] = dt['Data'].str[4:6]
 dt['FIPS'] = dt['Data'].str[6:11]
 dt['reg'] = dt['Data'].str[11:13]
@@ -31,7 +30,6 @@ dt['pop'] = dt['Data'].str[18:]
 dt['pop'] = dt['pop'].astype(int)
 
 dt = dt.drop('Data',axis=1)
-#print(dt.info())
 
 t2=time.perf_counter()
 print("parsed in...", round(t2-t1,3),"sec")
@@ -40,9 +38,6 @@ merged = pd.merge(dt, ct, on="FIPS")
 
 
 merged = merged[(merged['year']== 2017)&(merged['state'] != 'AK')&(merged['state'] != 'HI')]
-#merged = merged[(merged['state']== 'VA','WV')]
-#merged = merged[(merged['state'].isin(['VA','WV','NC','KY','MD','AL']))]
- 
 mergedsum = merged.groupby(merged['FIPS'], as_index=False)['pop'].sum()
 mergedsum = pd.merge(mergedsum,ct,on='FIPS')
 
@@ -56,8 +51,6 @@ ax1.scatter(oldsum['Longitude'], oldsum['Latitude'],oldsum['pop']/1000, alpha=0.
 
 plt.axis('equal')
 plt.show()
-#data = dt[(dt['year']==2016)]
-#print(data['pop'].sum())
 
 t3=time.perf_counter()
 print("plotted in...", round(t3-t2,3),"sec")
